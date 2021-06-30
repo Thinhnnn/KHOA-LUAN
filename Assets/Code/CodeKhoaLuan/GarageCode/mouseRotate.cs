@@ -10,20 +10,36 @@ public class mouseRotate : MonoBehaviour
     
     float ySpin, xSpin;
 
+    bool _isPause = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _isPause = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        ySpin = Input.GetAxis("Mouse X");
-        xSpin = Input.GetAxis("Mouse Y");
+        if (!_isPause)
+        {
+            ySpin = Input.GetAxis("Mouse X");
+            xSpin = Input.GetAxis("Mouse Y");
 
-        transform.Rotate(0f, ySpin * ySpeed * Time.deltaTime, 0f);
-        xSpin = Mathf.Clamp(xSpin, -maxXAngle, maxXAngle);
-        vertical.transform.Rotate(-xSpin * xSpeed * Time.deltaTime, 0f, 0f);
+            transform.Rotate(0f, ySpin * ySpeed * Time.deltaTime, 0f);
+            xSpin = Mathf.Clamp(xSpin, -maxXAngle, maxXAngle);
+            vertical.transform.Rotate(-xSpin * xSpeed * Time.deltaTime, 0f, 0f);
+        }
+        
+    }
+
+    public void doPause()
+    {
+        _isPause = true;
+    }
+
+    public void doContinue()
+    {
+        _isPause = false;
     }
 }

@@ -10,18 +10,34 @@ public class playerMove : MonoBehaviour
 
     [SerializeField] float speed = 100f;
 
+    bool _isPause = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _isPause = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        x = Input.GetAxis("Horizontal");
-        z = Input.GetAxis("Vertical");
+        if (!_isPause)
+        {
+            x = Input.GetAxis("Horizontal");
+            z = Input.GetAxis("Vertical");
 
-        transform.position += (vision.transform.forward * z + vision.transform.right * x) * speed * Time.deltaTime;
+            transform.position += (vision.transform.forward * z + vision.transform.right * x) * speed * Time.deltaTime;
+        }
+        
+    }
+
+    public void doPause()
+    {
+        _isPause = true;
+    }
+
+    public void doContinue()
+    {
+        _isPause = false;
     }
 }

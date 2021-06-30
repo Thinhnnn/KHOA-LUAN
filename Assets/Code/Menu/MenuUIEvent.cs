@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class MenuUIEvent : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class MenuUIEvent : MonoBehaviour
     public GameObject settingPanel;
     public GameObject jetProfilePanel;
     public GameObject levelSelectPanel;
+
+    [SerializeField] GameObject moveScript, mouseScript;
+
+    [SerializeField] GameObject player, playerPos;
 
     public Animator doorAnimator;
     public Animator Jet1Animator;
@@ -37,8 +42,41 @@ public class MenuUIEvent : MonoBehaviour
         
     }
 
+    public void resesetPlayerPos()
+    {
+        StartCoroutine(resetPos());
+    }
+
+    IEnumerator resetPos()
+    {
+        doPause();
+        player.transform.DOMove(playerPos.transform.position,1f);
+        yield return new WaitForSeconds(1f);
+        doContinue();
+    }
+
+    public void doPause()
+    {
+        moveScript.GetComponent<playerMove>().doPause();
+        mouseScript.GetComponent<mouseRotate>().doPause();
+    }
+
+    public void doContinue()
+    {
+        moveScript.GetComponent<playerMove>().doContinue();
+        mouseScript.GetComponent<mouseRotate>().doContinue();
+    }
+
     public void BtnExitClick()
     {
+        if(exitPanel.active == true)
+        {
+            doContinue();
+        }
+        else
+        {
+            doPause();
+        }
         var x = FindObjectOfType<AudioManager>();
         x.PlaySound("Click2");
         exitPanel.SetActive(!exitPanel.activeSelf);
@@ -46,6 +84,7 @@ public class MenuUIEvent : MonoBehaviour
 
     public void BtnExitConfirm()
     {
+        doContinue();
         var x = FindObjectOfType<AudioManager>();
         x.PlaySound("Click2");
         exitPanel.SetActive(!exitPanel.activeSelf);
@@ -54,6 +93,14 @@ public class MenuUIEvent : MonoBehaviour
 
     public void BtnHelpClick()
     {
+        if (helpPanel.active == true)
+        {
+            doContinue();
+        }
+        else
+        {
+            doPause();
+        }
         var x = FindObjectOfType<AudioManager>();
         x.PlaySound("Click2");
         helpPanel.SetActive(!helpPanel.activeSelf);
@@ -61,6 +108,14 @@ public class MenuUIEvent : MonoBehaviour
 
     public void BtnSettingClick()
     {
+        if (settingPanel.active == true)
+        {
+            doContinue();
+        }
+        else
+        {
+            doPause();
+        }
         var x = FindObjectOfType<AudioManager>();
         x.PlaySound("Click2");
         settingPanel.SetActive(!settingPanel.activeSelf);
@@ -68,6 +123,7 @@ public class MenuUIEvent : MonoBehaviour
 
     public void BtnSettingCancel()
     {
+        doContinue();
         var x = FindObjectOfType<AudioManager>();
         x.PlaySound("Click2");
         settingPanel.SetActive(!settingPanel.activeSelf);
@@ -96,6 +152,7 @@ public class MenuUIEvent : MonoBehaviour
 
     public void BtnPlayMouseClick()
     {
+        doPause();
         levelSelectPanel.SetActive(true);
         //StartCoroutine(jetFlyOut());
     }
@@ -111,6 +168,7 @@ public class MenuUIEvent : MonoBehaviour
 
     public void BtnCancelLevelClick()
     {
+        doContinue();
         levelSelectPanel.SetActive(false);
     }
 
